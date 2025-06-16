@@ -6,15 +6,17 @@ const initialGameBoard = [
   [null, null, null]
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
   function handleButtonClick(rowIndex, colIndex) {
     setGameBoard((prevValue) => {
       const updatedBoard = [...prevValue.map((arrays) => [...arrays])] // It is important that we do not mutate the state but make a copy of it.
-      updatedBoard[rowIndex][colIndex] = 'X';
+      updatedBoard[rowIndex][colIndex] = activePlayerSymbol;
       return updatedBoard;
     });
+
+    onSelectSquare();
   }
 
   return (<ol id="game-board">
