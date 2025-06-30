@@ -21,13 +21,12 @@ const initialGameBoard = [
   [null, null, null]
 ];
 
-
 function App() {
   const [gameTurn, setGameTurn] = useState([]);
 
   const activePlayer = deriveActivePlayer(gameTurn);
 
-  let gameBoard = initialGameBoard;
+  let gameBoard = [...initialGameBoard.map(array => [...array])]; // Here we are creating the deep copy of initialGameBoard
 
   for (const turn of gameTurn) {
     const { square, player } = turn;
@@ -55,6 +54,10 @@ function App() {
     });
   }
 
+  function resetGame() {
+    setGameTurn([]);
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -63,7 +66,7 @@ function App() {
           <Player name="Player1" symbol="X" isActive={activePlayer == 'X'} />
           <Player name="Player2" symbol="O" isActive={activePlayer == 'O'} />
         </ol>
-        {(winner || draw) && <GameOver winner={winner}/>}
+        {(winner || draw) && <GameOver winner={winner} onResetGame={resetGame} />}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurn} />
